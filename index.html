@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>The Sea</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+</head>
+
+<body>
+  <a-scene>
+    <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
+    <a-sky color="#0B0011"></a-sky>
+    <a-cylinder color="#FFFFFF" position="0 0 0" > </a-cylinder>
+
+  <script>
+      function createFlyingBlock() {
+          let block = document.createElement('a-box');
+          block.setAttribute('color', 'white');
+          block.setAttribute('depth', 0.2);
+          block.setAttribute('height', 0.2);
+          block.setAttribute('width', 0.2);
+        
+          let x = (Math.random() - 0.5) * 20;
+          let y = (Math.random() * 10) + 5;
+          let z = (Math.random() - 0.5) * 20;
+          block.setAttribute('position', `${x} ${y} ${z}`);
+
+        block.setAttribute('animation', {
+            property: 'position',
+            to: `${x + (Math.random() - 0.5) * 100} 
+            ${y + (Math.random() - 0.5) * 100} 
+            ${z + (Math.random() - 0.5) * 100}`,
+            dur: 20000,
+            easing: 'linear'
+        });
+
+
+          document.querySelector('a-scene').appendChild(block);
+
+
+          setTimeout(() => {
+              block.parentNode.removeChild(block);
+          }, 20000);
+      }
+
+      // Create a new flying block every second
+      setInterval(createFlyingBlock, 200);
+  </script>
+</body>
+
+</html>
