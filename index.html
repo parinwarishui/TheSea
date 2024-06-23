@@ -7,6 +7,7 @@
     <title>The Sea</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/bryik/aframe-glow/bc15b30d/dist/aframe-glow.min.js"></script>
     <style>
         #startButton {
             position: absolute;
@@ -32,20 +33,12 @@
     <button id="startButton">Enter The Sea</button>
 
     <a-scene>
-        <a-entity sound="src: ambient-music.mp3; autoplay: true; loop: true"></a-entity>
+
         <a-camera position="0 1.6 0" wasd-controls="enabled: false"></a-camera>
         <a-sky color="#0B0011"></a-sky>
-        <a-cylinder color="#FFFFFF" position="0 0 0" radius="3" height="0.1"></a-cylinder>
+        <a-cylinder id="platform" color="grey" position="0 0 0" radius="2" height="0.1" visible='false'></a-cylinder>
 
         <script>
-            // play music when button pressed
-            document.getElementById('startButton').addEventListener('click', function () {
-
-                this.style.display = 'none';
-
-                const musicEntity = document.getElementById('music');
-                musicEntity.components.sound.playSound();
-            });
 
             // create the floating white blocks
             function createFlyingBlock() {
@@ -54,6 +47,7 @@
                 block.setAttribute('depth', 0.2);
                 block.setAttribute('height', 0.2);
                 block.setAttribute('width', 0.2);
+                block.setAttribute('a-glow', "radius: 1; color: blue;");
 
                 let x = (Math.random() - 0.5) * 20;
                 let y = (Math.random() * 10) + 5;
@@ -65,7 +59,7 @@
                     to: `${x + (Math.random() - 0.5) * 100} 
                     ${y + (Math.random() - 0.5) * 100} 
                     ${z + (Math.random() - 0.5) * 100}`,
-                    dur: 20000,
+                    dur: 30000,
                     easing: 'linear'
                 });
 
@@ -78,7 +72,12 @@
                 }, 20000);
             }
 
-            setInterval(createFlyingBlock, 100);
+            document.getElementById('startButton').addEventListener('click', function () {
+
+                this.style.display = 'none';
+                document.querySelector('#platform').setAttribute('visible', 'true');
+                setInterval(createFlyingBlock, 100);
+            });
         </script>
 </body>
 

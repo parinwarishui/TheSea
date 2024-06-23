@@ -1,0 +1,16 @@
+this is a storage for useful code to implement in the future:
+
+// play music
+<a-entity sound="src: ambient-music.mp3; autoplay: true; loop: true"></a-entity>
+
+// in function play music
+// play music when button pressed
+document.getElementById('startButton').addEventListener('click', function () {
+
+    this.style.display = 'none';
+
+    const musicEntity = document.getElementById('music');
+    musicEntity.components.sound.playSound();
+});
+
+// glowing flying blocks?
