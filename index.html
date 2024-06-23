@@ -7,7 +7,6 @@
     <title>The Sea</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/bryik/aframe-glow/bc15b30d/dist/aframe-glow.min.js"></script>
     <style>
         #startButton {
             position: absolute;
@@ -33,52 +32,86 @@
     <button id="startButton">Enter The Sea</button>
 
     <a-scene>
-
+        <a-entity sound="src: ambient-music.mp3; autoplay: false; loop: true" id="music"></a-entity>
         <a-camera position="0 1.6 0" wasd-controls="enabled: false"></a-camera>
-        <a-sky color="#0B0011"></a-sky>
-        <a-cylinder id="platform" color="grey" position="0 0 0" radius="2" height="0.1" visible='false'></a-cylinder>
+        <a-sky color="black"></a-sky>
+        <a-cylinder id="ocean" color="white" position="0 0 0" radius="100" height="0.1" visible='false'
+            material="shader: flat; color: #000000; metalness: 0; roughness: 1"></a-cylinder>
+        <a-cylinder id="platform" color='white' position='0 0 0' radius='3' height='0.2' visible='false' </a-cylinder>
+            <script>
 
-        <script>
+                // create the floating white blocks
+                function createFlyingBlock() {
+                    let block = document.createElement('a-box');
+                    block.setAttribute('color', 'white');
+                    block.setAttribute('depth', 0.05);
+                    block.setAttribute('height', 0.05);
+                    block.setAttribute('width', 0.05);
 
-            // create the floating white blocks
-            function createFlyingBlock() {
-                let block = document.createElement('a-box');
-                block.setAttribute('color', 'white');
-                block.setAttribute('depth', 0.2);
-                block.setAttribute('height', 0.2);
-                block.setAttribute('width', 0.2);
-                block.setAttribute('a-glow', "radius: 1; color: blue;");
+                    let x = (Math.random() - 0.5) * 20;
+                    let y = (Math.random() - 0.5) * 20;
+                    let z = (Math.random() - 0.5) * 20;
+                    block.setAttribute('position', `${x} ${y} ${z}`);
 
-                let x = (Math.random() - 0.5) * 20;
-                let y = (Math.random() * 10) + 5;
-                let z = (Math.random() - 0.5) * 20;
-                block.setAttribute('position', `${x} ${y} ${z}`);
+                    block.setAttribute('animation', {
+                        property: 'position',
+                        to: `${x + (Math.random() - 0.5) * 5} 
+                    ${y + (Math.random() - 0.5) * 5} 
+                    ${z + (Math.random() - 0.5) * 5}`,
+                        dur: 30000,
+                        easing: 'linear'
+                    });
 
-                block.setAttribute('animation', {
-                    property: 'position',
-                    to: `${x + (Math.random() - 0.5) * 100} 
-                    ${y + (Math.random() - 0.5) * 100} 
-                    ${z + (Math.random() - 0.5) * 100}`,
-                    dur: 30000,
-                    easing: 'linear'
+
+                    document.querySelector('a-scene').appendChild(block);
+
+
+                    setTimeout(() => {
+                        block.parentNode.removeChild(block);
+                    }, 20000);
+                }
+
+                // create slowly rising orbs
+                function createFlyingBlock2() {
+                    let block = document.createElement('a-box');
+                    block.setAttribute('color', 'white');
+                    block.setAttribute('depth', 0.2);
+                    block.setAttribute('height', 0.2);
+                    block.setAttribute('width', 0.2);
+
+                    let x = (Math.random() - 0.5) * 20;
+                    let y = (Math.random() - 0.5) * 20;
+                    let z = (Math.random() - 0.5) * 20;
+                    block.setAttribute('position', `${x} ${y} ${z}`);
+
+                    block.setAttribute('animation', {
+                        property: 'position',
+                        to: `${x} 
+                    ${y + 50} 
+                    ${z}`,
+                        dur: 30000,
+                        easing: 'linear'
+                    });
+
+
+                    document.querySelector('a-scene').appendChild(block);
+
+
+                    setTimeout(() => {
+                        block.parentNode.removeChild(block);
+                    }, 20000);
+                }
+
+                document.getElementById('startButton').addEventListener('click', function () {
+                    const musicEntity = document.getElementById('music');
+                    musicEntity.components.sound.playSound();
+                    this.style.display = 'none';
+                    document.querySelector('#ocean').setAttribute('visible', 'true');
+                    document.querySelector('#platform').setAttribute('visible', 'true');
+                    setInterval(createFlyingBlock, 100);
+                    setInterval(createFlyingBlock2, 100);
                 });
-
-
-                document.querySelector('a-scene').appendChild(block);
-
-
-                setTimeout(() => {
-                    block.parentNode.removeChild(block);
-                }, 20000);
-            }
-
-            document.getElementById('startButton').addEventListener('click', function () {
-
-                this.style.display = 'none';
-                document.querySelector('#platform').setAttribute('visible', 'true');
-                setInterval(createFlyingBlock, 100);
-            });
-        </script>
+            </script>
 </body>
 
 </html>
