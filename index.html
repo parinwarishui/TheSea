@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <button id="startButton">Enter The Sea</button>
+    <button id="startButton">ENTER THE SEA</button>
 
     <a-scene>
         <a-entity sound="src: ambient-music.mp3; autoplay: false; loop: true" id="music"></a-entity>
@@ -41,16 +41,20 @@
             <script>
 
                 // create the floating white blocks
-                function createFlyingBlock() {
+                function makeAmbientOrbs() {
                     let block = document.createElement('a-box');
                     block.setAttribute('color', 'white');
                     block.setAttribute('depth', 0.05);
                     block.setAttribute('height', 0.05);
                     block.setAttribute('width', 0.05);
 
-                    let x = (Math.random() - 0.5) * 20;
-                    let y = (Math.random() - 0.5) * 20;
-                    let z = (Math.random() - 0.5) * 20;
+                    let x, y, z;
+                    do {
+                        x = (Math.random() - 0.5) * 100;
+                        z = (Math.random() - 0.5) * 100;
+                        y = (Math.random() * (20 - 1)) + 1;
+                    } while (x > -5 && x < 5 && z > -5 && z < 5 && y > 1);
+
                     block.setAttribute('position', `${x} ${y} ${z}`);
 
                     block.setAttribute('animation', {
@@ -72,23 +76,25 @@
                 }
 
                 // create slowly rising orbs
-                function createFlyingBlock2() {
+                function makeRisingOrbs() {
                     let block = document.createElement('a-box');
                     block.setAttribute('color', 'white');
-                    block.setAttribute('depth', 0.2);
-                    block.setAttribute('height', 0.2);
-                    block.setAttribute('width', 0.2);
+                    block.setAttribute('depth', 0.3);
+                    block.setAttribute('height', 0.3);
+                    block.setAttribute('width', 0.3);
 
-                    let x = (Math.random() - 0.5) * 20;
-                    let y = (Math.random() - 0.5) * 20;
-                    let z = (Math.random() - 0.5) * 20;
+                    let x, z;
+                    do {
+                        x = (Math.random() - 0.5) * 100;
+                        z = (Math.random() - 0.5) * 100;
+                    } while (x > -5 && x < 5 && z > -5 && z < 5);
+
+                    let y = -1;
                     block.setAttribute('position', `${x} ${y} ${z}`);
 
                     block.setAttribute('animation', {
                         property: 'position',
-                        to: `${x} 
-                    ${y + 50} 
-                    ${z}`,
+                        to: `${x} ${y + 50} ${z}`,
                         dur: 30000,
                         easing: 'linear'
                     });
@@ -99,7 +105,7 @@
 
                     setTimeout(() => {
                         block.parentNode.removeChild(block);
-                    }, 20000);
+                    }, 50000);
                 }
 
                 document.getElementById('startButton').addEventListener('click', function () {
@@ -108,8 +114,8 @@
                     this.style.display = 'none';
                     document.querySelector('#ocean').setAttribute('visible', 'true');
                     document.querySelector('#platform').setAttribute('visible', 'true');
-                    setInterval(createFlyingBlock, 100);
-                    setInterval(createFlyingBlock2, 100);
+                    setInterval(makeAmbientOrbs, 100);
+                    setInterval(makeRisingOrbs, 100);
                 });
             </script>
 </body>

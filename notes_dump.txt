@@ -1,4 +1,4 @@
-this is a storage for useful code to implement in the future:
+This file is just a lot of scribble, and storage for unused code
 
 // play music
 <a-entity sound="src: ambient-music.mp3; autoplay: true; loop: true"></a-entity>
@@ -14,3 +14,18 @@ document.getElementById('startButton').addEventListener('click', function () {
 });
 
 // glowing flying blocks?
+
+
+
+
+// randomize
+generating blocks OUTSIDE area of viewer.
+
+x-axis : between -10 and -20 / 10 and 20
+z-axis same
+
+random() = 0.0-1.0
+- 0.5 = between -0.5 to 0.5
+
+
+
