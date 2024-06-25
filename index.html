@@ -7,6 +7,7 @@
     <title>The Sea</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-mirror-component/dist/aframe-mirror-component.min.js"></script>
     <style>
         #startButton {
             position: absolute;
@@ -33,11 +34,24 @@
 
     <a-scene>
         <a-entity sound="src: ambient-music.mp3; autoplay: false; loop: true" id="music"></a-entity>
+        
+        <a-entity light="type: directional; color: #EEE; intensity: 0.6" position="0 1 0"></a-entity>
+        <a-entity light="type: ambient; color: #CCC; intensity: 0.2""></a-entity>
         <a-camera position="0 1.6 0" wasd-controls="enabled: false" look-controls="enabled: true"></a-camera>
-        <a-sky color="black"></a-sky>
-        <a-cylinder id="ocean" color="white" position="0 0 0" radius="100" height="0.1" visible='false'
-            material="shader: flat; color: #000000; metalness: 0; roughness: 1"></a-cylinder>
-        <a-cylinder id="platform" color='white' position='0 0 0' radius='3' height='0.2' visible='false' </a-cylinder>
+        
+        <a-sky color="#0B132B"></a-sky>
+        
+        <a-cylinder id="platform-edge" color='#FFFFFF' position='0 0 0' radius='3' height='0.2' visible='false'> </a-cylinder>
+        <a-cylinder id="roof-edge" color='#FFFFFF' position='0 4 0' radius='3' height='0.2' visible='false'> </a-cylinder>
+
+        <a-cylinder id="platform" color='#535654' position='0 0 0' radius='2.5' height='0.25' visible='false'> </a-cylinder>
+        <a-cylinder id="roof" color='#535654' position='0 4 0' radius='2.5' height='0.25' visible='false'> </a-cylinder>
+        
+        <a-cylinder id="pole1" color='#AAA9AD' position='2 3 2' radius='0.1' height='10' visible='false'></a-cylinder>
+        <a-cylinder id="pole2" color='#AAA9AD' position='-2 3 2' radius='0.1' height='10' visible='false'></a-cylinder>
+        <a-cylinder id="pole3" color='#AAA9AD' position='-2 3 -2' radius='0.1' height='10' visible='false'></a-cylinder>
+        <a-cylinder id="pole4" color='#AAA9AD' position='2 3 -2' radius='0.1' height='10' visible='false'></a-cylinder>
+        
             <script>
 
                 // function to create the floating white blocks
@@ -53,21 +67,20 @@
                     block.setAttribute('width', 0.05);
 
                     // set random x,y,x coordinates
-                    let x, y, z;
+                    let x, z;
                     do {
                         x = (Math.random() - 0.5) * 50;
                         z = (Math.random() - 0.5) * 50;
-                        y = (Math.random() * (20 - 1)) + 1;
-                    } while (x > -5 && x < 5 && z > -5 && z < 5 && y > 1);
+                    } while (x > -5 && x < 5 && z > -5 && z < 5);
+
+                    let y = -15;
                     block.setAttribute('position', `${x} ${y} ${z}`);
 
                     // set random destinations to move to
                     block.setAttribute('animation', {
                         property: 'position',
-                        to: `${x + (Math.random() - 0.5) * 5} 
-                    ${y + (Math.random() - 0.5) * 5} 
-                    ${z + (Math.random() - 0.5) * 5}`,
-                        dur: 30000,
+                        to: `${x} ${y + 50} ${z}`,
+                        dur: 20000,
                         easing: 'linear'
                     });
 
@@ -101,7 +114,7 @@
                         z = (Math.random() - 0.5) * 50;
                     } while (x > -5 && x < 5 && z > -5 && z < 5);
 
-                    let y = -1;
+                    let y = -15;
                     block.setAttribute('position', `${x} ${y} ${z}`);
 
                     // set random rotations for each one
@@ -113,7 +126,7 @@
                     // set its destination
                     block.setAttribute('animation', {
                         property: 'position',
-                        to: `${x} ${y + 100} ${z}`,
+                        to: `${x} ${y + 50} ${z}`,
                         dur: 50000,
                         easing: 'linear'
                     });
@@ -132,9 +145,14 @@
                     musicEntity.components.sound.playSound();
                     this.style.display = 'none';
 
-                    // reveal the elements
-                    document.querySelector('#ocean').setAttribute('visible', 'true');
                     document.querySelector('#platform').setAttribute('visible', 'true');
+                    document.querySelector('#roof').setAttribute('visible', 'true');
+                    document.querySelector('#platform-edge').setAttribute('visible', 'true');
+                    document.querySelector('#roof-edge').setAttribute('visible', 'true');
+                    document.querySelector('#pole1').setAttribute('visible', 'true');
+                    document.querySelector('#pole2').setAttribute('visible', 'true');
+                    document.querySelector('#pole3').setAttribute('visible', 'true');
+                    document.querySelector('#pole4').setAttribute('visible', 'true');
 
                     // set interval of making orbs
                     setInterval(makeAmbientOrbs, 100);
